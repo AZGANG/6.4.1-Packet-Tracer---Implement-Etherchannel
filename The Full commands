@@ -1,0 +1,71 @@
+Step 1: Obtain the devices that are required.
+
+Step 2: Name the devices.
+en
+config t
+hostname SWA
+en 
+config t
+hostname SWB
+en 
+config t
+hostname SWC
+
+SWA
+int range g0/1 - 2 
+shutdown 
+channel-group 1 mode desirable 
+no shut 
+
+int port-channel 1 
+switchport mode trunk 
+
+SWB 
+int range g0/1 - 2 
+shutdown 
+channel-group 1 mode desirable 
+no shut 
+
+int port-channel 1 
+switchport mode trunk
+
+
+Step 2: Configure a LACP EtherChannel.
+SWA
+int range f0/21 - 22
+shutdown 
+channel-group 2 mode active 
+no shut 
+
+int port-channel 2 
+switchport mode trunk 
+
+SWC
+int range f0/21 - 22
+shutdown 
+channel-group 2 mode active 
+no shut 
+
+int port-channel 2 
+switchport mode trunk 
+
+Configure a Backup LACP EtherChannel
+SWB
+int range f0/23 -24 
+shutdown 
+channel-group 3 mode passive 
+no shutdown 
+
+int port-channel group 3 
+switchport mode trunk 
+
+SWC
+
+int range f0/23 -24 
+shutdown 
+channel-group 3 mode active  
+no shutdown 
+
+int port-channel group 3 
+switchport mode trunk 
+
